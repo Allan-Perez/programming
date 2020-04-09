@@ -1,4 +1,5 @@
 #include <iostream>
+// Implementations of a rudimentary linked list (from cs50)
 
 template<typename T>
 typedef struct node{
