@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include "array_handler.h"
 using namespace std;
+// Rudimentary implementation of bubble and merge sort algos.
 
 void bubble_sort(int*, int);
 void merge_sort(int*, int, int);
