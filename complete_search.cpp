@@ -51,6 +51,30 @@ int main(int argv, char **argc){
   queen_backtracking(n_rows, start_looking_from, col, diag1, diag2, number_of_solutions); 
   cout << "There're " << number_of_solutions << " possible solutions." << endl;
 
+  // Problem 4: Pruning the search (add intelligence). It's not necessary to keep 
+  // looking for a solution that is obvious won't work. 
+  // Example: Imagine an nxn grid. How many paths are there such that it starts from the 
+  // left top corner and ends in the right bottom corner, and passes through each cell
+  // exactly once. 
+  // The backtracking option would take around 8 minutes with a 7x7 grid.
+  // One trivial optimization is not to look for symmetric solutions, so just pick right or
+  // down and then multiply by two the number of found solutions.
+  // Another optimization is to stop looking if we reached the lower right corner before 
+  // it has gone through all other cells (it's pointless to keep searching if it is already lost).
+  // The most useful optimization: When it hits the upper wall without having visited all the 
+  // other cells, the grid will be divided, so it won't be possible to go through all the cells.
+  // By applying all of there, we could bring it down from 8minutes to 2 seconds. 
+  // The above optimization can be generalised: when it can't continue forwards but rather 
+  // pick left or right, it divides the grid into two. So when reached, stop searching.
+  // Now the algorithms is 1000x faster. 
+  // It's a particularly useful task to look for the most obvious optimization, because 
+  // it may make the tree to shrink by a lot. The most useful optimisations are the ones that occur
+  // at the top of the tree. 
+
+  // Meet in the middle: divide search space in two parts of ~ equal parts. Then perform search
+  // in both of them and combine results. Principle of divide et impera. Can reduce search space
+  // to the square root of it. 
+
 }
 void queen_backtracking(int n, int p_row, vector<bool> &col, vector<bool> &diag1, vector<bool> &diag2, int &n_solutions){
   // p_row should be first 0, so that it can start looking for a solution
