@@ -19,7 +19,7 @@ struct Node{
 };
 
 typedef struct HHeap{
-  struct vector<pair<Node, Node>> nodes_arr;
+  vector<pair<Node, Node>> nodes_arr;
   // Vector of 2 nodes have the nodes of the heap
   // The first element (0) will be the lowest weight, and the 
   // the first Node of the second element(1) will be the sum
@@ -34,17 +34,17 @@ public:
     
     if(nodes_arr[cidx].first.character == c){
       // if character reached, add 0 and finish search
-      codeword.push_back(0);
+      codeword.push_back(false);
       return; 
     } else if(nodes_arr[cidx].second.character == c){
-      codeword.push_back(1);
+      codeword.push_back(true);
       return;
     } else {
       if(cidx== nodes_arr.size()-1){
         cout << "Reached end of heap and the character was not found." << endl;
         return;
       }
-      codeword.push_back(1); // Effectively choose the second node (right node) to keep looking
+      codeword.push_back(true); // Effectively choose the second node (right node) to keep looking
       getCharacterCodeWord(idx+1, c, codeword);
     }
     
@@ -144,7 +144,6 @@ int main(int argv, char ** argc){
   // d 1110
   // ...
   HHeap heap;
-  string to_compress = "abcaadbbbedd";
 
   build_heap(heap, elements);
   cout << "Elements: " << endl;
@@ -155,8 +154,8 @@ int main(int argv, char ** argc){
   heap.printHeap();
 
   vector<bool> cw;
-  heap.getCharacterCodeWord(0,'a',cw);
-  cout << "Codeword of a: <" ;
+  heap.getCharacterCodeWord(0,'o',cw);
+  cout << "Codeword of o: <" ;
   for(int i=0; i<cw.size(); i++){
     int c = (cw[i])?1:0; 
     cout << c << ", ";
@@ -170,7 +169,7 @@ int main(int argv, char ** argc){
 void build_heap(struct HHeap& h, vector<pair<char, int>>& el){
   // Reverse sort by int element. First element is the one with lowest frequency
   sort(el.rbegin(), el.rend(), [](const pair<char, int>& a, const pair<char, int>& b){
-    return a.second < b.second;
+    return a.second > b.second;
   });
   Node first;
   Node second;
@@ -181,6 +180,7 @@ void build_heap(struct HHeap& h, vector<pair<char, int>>& el){
   h.initializeHeap(first, second);
 
   for(int i=2; i<el.size(); i++){
+    cout << "Node: " << el[i].first << endl;
     h.newNode(el[i].first, el[i].second);
   }
 }
